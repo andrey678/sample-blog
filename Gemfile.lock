@@ -225,7 +225,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
-  capybara (>= 2.15)
+  capybara
   devise
   jbuilder (~> 2.7)
   puma (~> 4.1)
