@@ -6,6 +6,8 @@ require 'rspec/rails'
 require 'support/session_helper'
 require 'support/database_cleaner'
 require 'support/factory_bot'
+require 'capybara/rspec'
+
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 
@@ -24,7 +26,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
@@ -74,3 +76,19 @@ end
     with.library :rails
   end
 end
+
+
+RSpec::Matchers.define :have_content_i do |expected|
+  match do |actual|
+    actual.text =~ /#{Regexp.quote expected}/i
+  end
+
+  failure_message do |actual|
+     "expected to find text #{expected.inspect} case insensitively in #{actual.text.inspect}"
+  end
+
+  failure_message_when_negated do |actual|
+    "expected to not to find text #{expected.inspect} case insensitively in #{actual.text.inspect}"
+  end
+end
+
